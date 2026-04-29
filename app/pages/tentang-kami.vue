@@ -3,7 +3,10 @@ import { onMounted, onUnmounted } from 'vue'
 import { Eye, Target } from 'lucide-vue-next'
 import { gsap } from 'gsap'
 
-useHead({ title: 'Tentang Kami – BangunInd' })
+useHead({ 
+  title: 'Tentang Kami',
+  meta: [{ name: 'description', content: 'Kenali BangunInd (PT Satset Karya Nusantara), penyedia layanan konstruksi dengan pengalaman lebih dari 10 tahun di Sukabumi.' }]
+})
 
 const milestones = [
   { year: '2009', title: 'Awal Mula', desc: 'BangunInd didirikan di Jakarta dengan fokus pada renovasi residential.' },

@@ -119,7 +119,7 @@ onUnmounted(() => ctx?.revert())
               <NuxtLink to="/kontak-kami" class="btn-primary">
                 Hubungi Kami <ArrowRight class="w-5 h-5" />
               </NuxtLink>
-              <a href="https://wa.me/62" class="btn-secondary !bg-white/10 hover:!bg-white/20 !border-white/10">WhatsApp</a>
+              <a href="https://wa.me/6285523951105" class="btn-secondary !bg-white/10 hover:!bg-white/20 !border-white/10">WhatsApp</a>
             </div>
           </div>
         </div>

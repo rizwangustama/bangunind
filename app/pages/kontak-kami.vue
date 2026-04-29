@@ -83,7 +83,7 @@ onUnmounted(() => {
                 </div>
                 <div>
                   <h4 class="text-lg font-bold font-jakarta text-navy mb-1">Telepon & WhatsApp</h4>
-                  <p class="text-gray-500 leading-relaxed">+62 21 5555 1234<br>+62 812 3456 7890 (WA Only)</p>
+                  <p class="text-gray-500 leading-relaxed">0855 2395 1105 (Telepon & WA)</p>
                 </div>
               </div>
 

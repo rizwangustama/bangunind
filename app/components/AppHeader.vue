@@ -82,12 +82,7 @@ const closeMenu = () => {
     <div class="container mx-auto px-4 md:px-6 flex items-center justify-between">
       <!-- Logo -->
       <NuxtLink to="/" class="flex items-center gap-2.5 group shrink-0" @click="closeMenu">
-        <div class="w-9 h-9 bg-brand-orange rounded-lg flex items-center justify-center shadow-orange-glow group-hover:rotate-12 transition-transform duration-300">
-          <span class="text-white font-black text-lg">B</span>
-        </div>
-        <span class="text-xl font-black font-jakarta tracking-tight text-white">
-          Bangun<span class="text-brand-orange">Ind</span>
-        </span>
+        <img src="~/assets/images/logo.webp" alt="BangunInd Logo" class="h-8 w-auto object-contain" />
       </NuxtLink>
 
       <!-- Desktop Nav -->
@@ -276,7 +271,7 @@ const closeMenu = () => {
               <ChevronRight class="w-5 h-5" />
             </NuxtLink>
             <a
-              href="https://wa.me/62"
+              href="https://wa.me/6285523951105"
               class="w-full flex items-center justify-center gap-2.5 py-3.5 rounded-2xl border border-white/10 text-white/60 text-sm font-semibold hover:text-white hover:border-green-400/40 hover:bg-green-400/5 transition-all duration-300"
               @click="closeMenu"
             >

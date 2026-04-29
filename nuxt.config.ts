@@ -9,14 +9,33 @@ export default defineNuxtConfig({
   css: ['~/assets/css/main.css'],
   app: {
     head: {
-      title: 'BangunInd - Membangun Masa Depan Indonesia',
+      titleTemplate: '%s | BangunInd – PT Satset Karya Nusantara',
+      title: 'Konstruksi & Infrastruktur Sukabumi',
       htmlAttrs: { lang: 'id' },
       meta: [
         { charset: 'utf-8' },
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-        { name: 'description', content: 'BangunInd adalah perusahaan konstruksi dan pengembangan properti terpercaya di Indonesia. Kami berkomitmen membangun masa depan yang lebih baik.' },
+        { name: 'description', content: 'BangunInd adalah penyedia jasa konstruksi dan infrastruktur terpercaya di Sukabumi. Kami melayani pembangunan jalan, irigasi, gedung, dan pematangan lahan dengan hasil berkualitas.' },
+        { name: 'format-detection', content: 'telephone=no' },
+        // Open Graph / Facebook
+        { property: 'og:type', content: 'website' },
+        { property: 'og:url', content: 'https://bangunind.id/' },
+        { property: 'og:title', content: 'BangunInd - Konstruksi & Infrastruktur Sukabumi' },
+        { property: 'og:description', content: 'Solusi konstruksi lengkap: jalan, irigasi, gedung, dan pematangan lahan di wilayah Sukabumi.' },
+        { property: 'og:image', content: '/og-image.png' },
+        // Twitter
+        { name: 'twitter:card', content: 'summary_large_image' },
+        { name: 'twitter:url', content: 'https://bangunind.id/' },
+        { name: 'twitter:title', content: 'BangunInd - Konstruksi & Infrastruktur Sukabumi' },
+        { name: 'twitter:description', content: 'Solusi konstruksi lengkap: jalan, irigasi, gedung, dan pematangan lahan di wilayah Sukabumi.' },
+        { name: 'twitter:image', content: '/og-image.png' },
       ],
       link: [
+        { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+        { rel: 'apple-touch-icon', sizes: '180x180', href: '/apple-touch-icon.png' },
+        { rel: 'icon', type: 'image/png', sizes: '32x32', href: '/favicon-32x32.png' },
+        { rel: 'icon', type: 'image/png', sizes: '16x16', href: '/favicon-16x16.png' },
+        { rel: 'manifest', href: '/site.webmanifest' },
         { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
         { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' },
         {

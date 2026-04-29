@@ -4,8 +4,8 @@ import { ArrowRight, CheckCircle2, Building2, HardHat, Users, Phone, Waves, MapP
 import { gsap } from 'gsap'
 
 useHead({
-  title: 'BangunInd – Konstruksi & Infrastruktur Sukabumi',
-  meta: [{ name: 'description', content: 'Penyedia layanan konstruksi dan infrastruktur terpercaya di wilayah Sukabumi dan sekitarnya.' }],
+  title: 'Beranda',
+  meta: [{ name: 'description', content: 'Penyedia layanan konstruksi dan infrastruktur terpercaya di wilayah Sukabumi dan sekitarnya. Melayani jalan, irigasi, dan gedung.' }],
 })
 
 const services = [
@@ -442,7 +442,7 @@ onUnmounted(() => {
               <NuxtLink to="/kontak-kami" class="btn-primary !bg-brand-orange hover:!bg-orange-600">
                 Hubungi Kami Sekarang
               </NuxtLink>
-              <a href="tel:+62" class="btn-secondary border-white/20">
+              <a href="tel:+6285523951105" class="btn-secondary border-white/20">
                 <Phone class="w-5 h-5" /> Telepon Langsung
               </a>
             </div>

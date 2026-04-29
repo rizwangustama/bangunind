@@ -3,7 +3,10 @@ import { onMounted, onUnmounted } from 'vue'
 import { Waves, MapPin, Building2, Layers, Users, Package, Trash2, ArrowRight } from 'lucide-vue-next'
 import { gsap } from 'gsap'
 
-useHead({ title: 'Layanan – BangunInd' })
+useHead({ 
+  title: 'Layanan Konstruksi & Infrastruktur',
+  meta: [{ name: 'description', content: 'Solusi konstruksi lengkap: jalan, irigasi, gedung, pematangan lahan, tenaga kerja, dan penyewaan alat berat di Sukabumi.' }]
+})
 
 const services = [
   {
