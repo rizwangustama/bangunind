@@ -1,0 +1,130 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─── Custom Properties ─────────────────────────────────────── */
+:root {
+  --navy:        #1E3A5F;
+  --navy-dark:   #152b47;
+  --orange:      #F97316;
+  --orange-dark: #EA580C;
+  --white:       #FFFFFF;
+  --light:       #F1F5F9;
+  --gray:        #374151;
+}
+
+/* ─── Base ───────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Inter', sans-serif;
+  color: var(--gray);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+/* ─── Page Transition ────────────────────────────────────────── */
+.page-enter-active {
+  transition: opacity 0.35s ease, transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+.page-leave-active {
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+.page-enter-from { opacity: 0; transform: translateY(20px); }
+.page-leave-to   { opacity: 0; transform: translateY(-12px); }
+
+/* ─── Clip Paths ─────────────────────────────────────────────── */
+.clip-diagonal        { clip-path: polygon(0 0, 100% 0, 100% 88%, 0 100%); }
+.clip-diagonal-top    { clip-path: polygon(0 6%, 100% 0, 100% 100%, 0 100%); }
+.clip-diagonal-both   { clip-path: polygon(0 4%, 100% 0, 100% 96%, 0 100%); }
+
+/* ─── Gradients ──────────────────────────────────────────────── */
+.gradient-navy   { background: linear-gradient(135deg, #1E3A5F 0%, #152b47 100%); }
+.gradient-orange { background: linear-gradient(135deg, #F97316 0%, #EA580C 100%); }
+.gradient-hero   { background: linear-gradient(145deg, #1E3A5F 0%, #152b47 55%, #0f1f35 100%); }
+
+/* ─── Text Gradient ──────────────────────────────────────────── */
+.text-gradient {
+  background: linear-gradient(135deg, #F97316, #EA580C);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ─── Glass Card ─────────────────────────────────────────────── */
+.glass-card {
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+/* ─── Dot Grid Pattern ───────────────────────────────────────── */
+.dot-pattern {
+  background-image: radial-gradient(circle, rgba(255,255,255,0.08) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+.dot-pattern-dark {
+  background-image: radial-gradient(circle, rgba(30,58,95,0.08) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+/* ─── Buttons ────────────────────────────────────────────────── */
+@layer components {
+  .btn-primary {
+    @apply inline-flex items-center gap-2 bg-brand-orange hover:bg-brand-orange-dark text-white font-semibold font-jakarta px-8 py-3.5 rounded-full transition-all duration-300 hover:shadow-orange-glow hover:-translate-y-0.5 active:translate-y-0;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center gap-2 border-2 border-white text-white hover:bg-white hover:text-navy font-semibold font-jakarta px-8 py-3.5 rounded-full transition-all duration-300;
+  }
+
+  .btn-outline {
+    @apply inline-flex items-center gap-2 border-2 border-navy text-navy hover:bg-navy hover:text-white font-semibold font-jakarta px-8 py-3.5 rounded-full transition-all duration-300;
+  }
+
+  .btn-outline-orange {
+    @apply inline-flex items-center gap-2 border-2 border-brand-orange text-brand-orange hover:bg-brand-orange hover:text-white font-semibold font-jakarta px-8 py-3.5 rounded-full transition-all duration-300;
+  }
+
+  /* ─── Section ─────────────────────────────────────────────── */
+  .section-pad     { @apply py-20 md:py-28; }
+  .section-title   { @apply text-3xl md:text-4xl lg:text-5xl font-bold font-jakarta leading-tight; }
+  .section-subtitle { @apply text-base md:text-lg text-gray-500 max-w-2xl; }
+
+  /* ─── Card ────────────────────────────────────────────────── */
+  .card-base {
+    @apply bg-white rounded-2xl shadow-card hover:shadow-card-hover transition-all duration-300 hover:-translate-y-1.5;
+  }
+
+  /* ─── Orange Bar ──────────────────────────────────────────── */
+  .orange-bar {
+    @apply w-12 h-1.5 rounded-full bg-gradient-orange mb-4;
+  }
+}
+
+/* ─── GSAP Reveal (initial hidden state) ─────────────────────── */
+.reveal { opacity: 0; transform: translateY(40px); }
+.reveal-left { opacity: 0; transform: translateX(-40px); }
+.reveal-right { opacity: 0; transform: translateX(40px); }
+.reveal-scale { opacity: 0; transform: scale(0.9); }
+
+/* ─── Floating Shapes ────────────────────────────────────────── */
+.shape-circle {
+  border-radius: 50%;
+  position: absolute;
+  pointer-events: none;
+}
+
+/* ─── Scrollbar ──────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--light); }
+::-webkit-scrollbar-thumb { background: var(--navy); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--orange); }

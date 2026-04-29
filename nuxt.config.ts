@@ -1,0 +1,30 @@
+// https://nuxt.com/docs/api/configuration/nuxt-config
+export default defineNuxtConfig({
+  compatibilityDate: '2024-11-01',
+  future: {
+    compatibilityVersion: 4,
+  },
+  devtools: { enabled: false },
+  modules: ['@nuxtjs/tailwindcss'],
+  css: ['~/assets/css/main.css'],
+  app: {
+    head: {
+      title: 'BangunInd - Membangun Masa Depan Indonesia',
+      htmlAttrs: { lang: 'id' },
+      meta: [
+        { charset: 'utf-8' },
+        { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+        { name: 'description', content: 'BangunInd adalah perusahaan konstruksi dan pengembangan properti terpercaya di Indonesia. Kami berkomitmen membangun masa depan yang lebih baik.' },
+      ],
+      link: [
+        { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
+        { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' },
+        {
+          rel: 'stylesheet',
+          href: 'https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Inter:wght@400;500;600&display=swap',
+        },
+      ],
+    },
+    pageTransition: { name: 'page', mode: 'out-in' },
+  },
+})
