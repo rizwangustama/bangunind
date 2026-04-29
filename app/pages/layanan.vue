@@ -15,7 +15,7 @@ const services = [
     desc: 'Pembangunan infrastruktur primer seperti saluran irigasi, bendungan kecil, drainase, dan jaringan utilitas yang mendukung keberlangsungan kawasan secara jangka panjang.',
     icon: Waves,
     tags: ['Saluran Irigasi', 'Drainase & Gorong-gorong', 'Bendungan & Tanggul', 'Jaringan Utilitas'],
-    image: 'https://images.unsplash.com/photo-1541888946425-d81bb19480c5?auto=format&fit=crop&q=80&w=900',
+    image: 'https://images.unsplash.com/photo-1581094794329-c8112a89af12?auto=format&fit=crop&q=80&w=900',
     accent: '#1E3A5F',
   },
   {
@@ -33,7 +33,7 @@ const services = [
     desc: 'Pembangunan gedung komersial, hunian residensial, dan fasilitas industri dengan standar mutu tinggi, pengawasan ketat, serta ketepatan waktu yang terjamin.',
     icon: Building2,
     tags: ['Gedung Perkantoran', 'Hunian Residensial', 'Fasilitas Industri', 'Bangunan Komersial'],
-    image: 'https://images.unsplash.com/photo-1503387762-592dee58c460?auto=format&fit=crop&q=80&w=900',
+    image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80&w=900',
     accent: '#1E3A5F',
   },
   {
@@ -60,7 +60,7 @@ const services = [
     desc: 'Penyediaan alat berat, peralatan konstruksi, dan material bangunan berkualitas untuk mendukung kelancaran, efisiensi, dan ketepatan waktu setiap proyek.',
     icon: Package,
     tags: ['Sewa Alat Berat', 'Peralatan Konstruksi', 'Suplai Material', 'Logistik Proyek'],
-    image: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&q=80&w=900',
+    image: 'https://images.unsplash.com/photo-1590674899484-d5640e854abe?auto=format&fit=crop&q=80&w=900',
     accent: '#F97316',
   },
   {
@@ -228,14 +228,24 @@ onUnmounted(() => ctx?.revert())
             <!-- Image -->
             <div class="svc-image relative">
               <div
-                class="rounded-[2.5rem] overflow-hidden shadow-2xl aspect-[4/3]"
+                class="relative rounded-[2.5rem] overflow-hidden shadow-2xl aspect-[4/3] bg-[#060f1c] group"
                 :class="index % 2 === 0 ? 'rotate-1' : '-rotate-1'"
               >
+                <!-- Photo with Lazy Loading -->
                 <img
                   :src="service.image"
                   :alt="service.title"
-                  class="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
+                  loading="lazy"
+                  class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                 />
+                
+                <!-- Dark Overlay -->
+                <div class="absolute inset-0 bg-navy/20 group-hover:bg-navy/0 transition-colors duration-700" />
+                
+                <!-- Animated Icon Overlay -->
+                <div class="absolute bottom-6 right-6 w-16 h-16 bg-brand-orange/90 rounded-2xl flex items-center justify-center text-white backdrop-blur-md shadow-xl transform translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
+                  <component :is="service.icon" class="w-8 h-8" />
+                </div>
               </div>
 
               <!-- Floating accent badge -->

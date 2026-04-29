@@ -36,13 +36,26 @@ onMounted(() => {
   ctx = gsap.context(() => {
     // ── Hero entrance timeline ───────────────────────────────────────
     const tl = gsap.timeline({ delay: 0.2 })
-    tl.fromTo('.hero-eyebrow', { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6, ease: 'power3.out' })
-      .fromTo('.hero-title',  { y: 80, opacity: 0 }, { y: 0, opacity: 1, duration: 1.1, ease: 'power4.out' }, '-=0.3')
-      .fromTo('.hero-line',   { scaleX: 0, opacity: 0 }, { scaleX: 1, opacity: 1, duration: 0.7, ease: 'power2.out', transformOrigin: 'left' }, '-=0.6')
-      .fromTo('.hero-desc',   { y: 24, opacity: 0 }, { y: 0, opacity: 1, duration: 0.7, ease: 'power3.out' }, '-=0.5')
-      .fromTo('.hero-btns',   { y: 24, opacity: 0 }, { y: 0, opacity: 1, duration: 0.7, ease: 'power3.out' }, '-=0.5')
-      .fromTo('.hero-image',  { clipPath: 'inset(0 100% 0 0)', opacity: 0 }, { clipPath: 'inset(0 0% 0 0)', opacity: 1, duration: 1.2, ease: 'power3.inOut' }, '-=0.8')
-      .fromTo('.hero-overlay-card', { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.7, ease: 'back.out(1.4)' }, '-=0.4')
+    tl.fromTo('.hero-title',  { y: 60, opacity: 0 }, { y: 0, opacity: 1, duration: 1.0, ease: 'power4.out' })
+      .fromTo('.hero-line',   { scaleX: 0, opacity: 0 }, { scaleX: 1, opacity: 1, duration: 0.6, ease: 'power2.out', transformOrigin: 'center' }, '-=0.5')
+      .fromTo('.hero-desc',   { y: 24, opacity: 0 }, { y: 0, opacity: 1, duration: 0.7, ease: 'power3.out' }, '-=0.4')
+      .fromTo('.hero-btns',   { y: 24, opacity: 0 }, { y: 0, opacity: 1, duration: 0.7, ease: 'power3.out' }, '-=0.4')
+      .fromTo('.hero-image',  { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.8, ease: 'power3.out' }, '-=0.4')
+      .fromTo('.hero-scroll-cue', { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.8, ease: 'power2.out' }, '-=0.2')
+
+    // ── Number counters ──────────────────────────────────────────────
+    gsap.utils.toArray('.stat-num').forEach((el: any) => {
+      const target = parseInt(el.getAttribute('data-target') || '0', 10)
+      gsap.to({ val: 0 }, {
+        val: target,
+        duration: 2.5,
+        delay: 0.6, // Start slightly after the stats box appears
+        ease: 'power3.out',
+        onUpdate: function() {
+          el.innerText = Math.floor(this.targets()[0].val)
+        }
+      })
+    })
 
     // ── Cycling headline word ────────────────────────────────────────
     const cycleWord = () => {
@@ -99,17 +112,64 @@ onMounted(() => {
       duration: 18, ease: 'none',
       repeat: -1,
     })
-    // Counter-rotating orbital inner
-    gsap.to('.hero-orbital-inner', {
-      rotation: -360,
-      duration: 12, ease: 'none',
+    // Scroll wheel bouncing animation
+    gsap.to('.scroll-wheel', {
+      y: 12,
+      opacity: 0,
+      duration: 1.5,
+      ease: 'power2.in',
       repeat: -1,
     })
+
     // Ticker marquee
     gsap.to('.hero-ticker-inner', {
       xPercent: -50,
       duration: 20, ease: 'none',
       repeat: -1,
+    })
+
+    // ── Mouse Parallax & Custom Cursor ──────────────────────────────
+    gsap.set('.hero-orb-1', { xPercent: -50 })
+    gsap.set('.hero-orbital, .hero-ring', { xPercent: -50, yPercent: -50 })
+    gsap.set('.custom-cursor', { xPercent: -50, yPercent: -50 })
+
+    const cursorX = gsap.quickTo('.custom-cursor', 'x', { duration: 0.3, ease: 'power3' })
+    const cursorY = gsap.quickTo('.custom-cursor', 'y', { duration: 0.3, ease: 'power3' })
+
+    const handleMouseMove = (e: MouseEvent) => {
+      // Custom cursor
+      cursorX(e.clientX)
+      cursorY(e.clientY)
+
+      // Parallax
+      const x = (e.clientX / window.innerWidth - 0.5) * 2
+      const y = (e.clientY / window.innerHeight - 0.5) * 2
+
+      gsap.to('.hero-orb-1', { x: x * 50, y: y * 50, duration: 1.5, ease: 'power2.out' })
+      gsap.to('.hero-orb-2', { x: x * -40, y: y * -40, duration: 1.5, ease: 'power2.out' })
+      gsap.to('.hero-orb-3', { x: x * 30, y: y * -30, duration: 1.5, ease: 'power2.out' })
+      gsap.to('.hero-orbital, .hero-ring', { x: x * 15, y: y * 15, duration: 1.5, ease: 'power2.out' })
+    }
+
+    // Cursor hover effects
+    const interactiveEls = document.querySelectorAll('a, button, .svc-bento')
+    const onHover = () => gsap.to('.custom-cursor', { scale: 1.8, backgroundColor: 'rgba(249, 115, 22, 0.1)', borderColor: 'rgba(249, 115, 22, 0.8)', duration: 0.3 })
+    const onLeave = () => gsap.to('.custom-cursor', { scale: 1, backgroundColor: 'transparent', borderColor: 'rgba(249, 115, 22, 0.4)', duration: 0.3 })
+
+    interactiveEls.forEach(el => {
+      el.addEventListener('mouseenter', onHover)
+      el.addEventListener('mouseleave', onLeave)
+    })
+
+    window.addEventListener('mousemove', handleMouseMove)
+
+    // Store for cleanup
+    ctx?.add(() => {
+      window.removeEventListener('mousemove', handleMouseMove)
+      interactiveEls.forEach(el => {
+        el.removeEventListener('mouseenter', onHover)
+        el.removeEventListener('mouseleave', onLeave)
+      })
     })
     // Image subtle float
     gsap.to('.hero-img-wrap', {
@@ -160,107 +220,86 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div class="overflow-x-hidden">
+  <div class="overflow-x-hidden" style="cursor: none;">
+
+    <!-- Custom Cursor -->
+    <div class="custom-cursor fixed top-0 left-0 w-8 h-8 border border-brand-orange/40 rounded-full pointer-events-none z-[9999] hidden md:flex items-center justify-center">
+      <div class="w-1.5 h-1.5 bg-brand-orange rounded-full" />
+    </div>
 
     <!-- ── Hero ──────────────────────────────────────────────────── -->
     <section class="relative min-h-screen flex flex-col justify-center bg-navy overflow-hidden">
 
-      <!-- Background ambient orbs (looping float) -->
-      <div class="hero-orb-1 absolute top-[15%] right-[10%] w-72 h-72 bg-brand-orange/20 rounded-full blur-[90px] pointer-events-none" />
-      <div class="hero-orb-2 absolute bottom-[20%] left-[5%] w-64 h-64 bg-brand-orange/10 rounded-full blur-[80px] pointer-events-none" />
-      <div class="hero-orb-3 absolute top-[55%] right-[35%] w-48 h-48 bg-white/5 rounded-full blur-[70px] pointer-events-none" />
-
-      <!-- Dot grid -->
-      <div class="absolute inset-0 dot-pattern opacity-10 pointer-events-none" />
-
-      <!-- Thin diagonal accent line top-right -->
-      <div class="absolute top-0 right-0 w-px h-[55%] bg-gradient-to-b from-transparent via-white/15 to-transparent" />
-      <div class="absolute top-0 right-[80px] w-px h-[35%] bg-gradient-to-b from-transparent via-brand-orange/30 to-transparent" />
-
-      <!-- Rotating orbital ring (decorative) -->
-      <div class="hero-orbital absolute -right-40 top-1/2 -translate-y-1/2 w-[520px] h-[520px] rounded-full border border-dashed border-white/10 pointer-events-none" />
-      <div class="hero-orbital-inner absolute -right-40 top-1/2 -translate-y-1/2 w-[360px] h-[360px] rounded-full border border-dashed border-brand-orange/15 pointer-events-none" />
-      <!-- Pulsing glow ring -->
-      <div class="hero-ring absolute -right-40 top-1/2 -translate-y-1/2 w-[440px] h-[440px] rounded-full border-2 border-brand-orange/20 pointer-events-none" />
-
-      <!-- Main content -->
-      <div class="container mx-auto px-4 md:px-8 relative z-10 pt-28 pb-16">
-        <div class="grid lg:grid-cols-[1fr_1fr] gap-12 xl:gap-20 items-center">
-
-          <!-- ─ Left: Copy ─────────────────────────────────────── -->
-          <div class="text-white">
-            <!-- Eyebrow badge -->
-            <div class="hero-eyebrow inline-flex items-center gap-3 mb-8">
-              <span class="flex items-center gap-1.5 text-xs font-bold tracking-[0.2em] uppercase text-brand-orange">
-                <span class="w-6 h-px bg-brand-orange" />
-                Konstruksi & Infrastruktur
-              </span>
-              <span class="w-1.5 h-1.5 rounded-full bg-white/30" />
-              <span class="text-xs text-white/50 tracking-wider">Sukabumi & Sekitarnya</span>
-            </div>
-
-            <!-- Headline -->
-            <h1 class="hero-title font-jakarta font-black leading-[1.0] mb-6" style="font-size: clamp(3rem, 6vw, 5.5rem);">
-              Bangun
-              <span class="hero-cycle-word block text-gradient" style="min-height: 1.1em; display: block;">{{ cyclingWords[0] }}</span>
-              <span class="block">Selesai Tepat.</span>
-            </h1>
-
-            <!-- Orange accent line -->
-            <div class="hero-line w-24 h-1 bg-brand-orange rounded-full mb-8 origin-left" />
-
-            <p class="hero-desc text-white/60 text-lg leading-relaxed max-w-md mb-10">
-              Penyedia jasa konstruksi dan infrastruktur yang efisien, rapi, dan sesuai kebutuhan
-              lapangan — dari infrastruktur desa hingga pekerjaan jalan.
-            </p>
-
-            <!-- CTAs -->
-            <div class="hero-btns flex flex-wrap gap-4">
-              <NuxtLink to="/layanan" class="btn-primary">
-                Lihat Layanan Kami <ArrowRight class="w-5 h-5" />
-              </NuxtLink>
-              <NuxtLink to="/kontak-kami" class="btn-secondary">Konsultasi Gratis</NuxtLink>
-            </div>
-          </div>
-
-          <!-- ─ Right: Visual ───────────────────────────────────────── -->
-          <div class="hero-image relative hidden lg:block">
-            <!-- Main image with clip-path reveal -->
-            <div class="hero-img-wrap relative rounded-3xl overflow-hidden shadow-2xl border border-white/10 aspect-[4/5]">
-              <img
-                src="https://images.unsplash.com/photo-1541888946425-d81bb19480c5?auto=format&fit=crop&q=80&w=900"
-                alt="Proyek Konstruksi BangunInd"
-                class="w-full h-full object-cover scale-105"
-              />
-              <!-- Dark gradient overlay -->
-              <div class="absolute inset-0 bg-gradient-to-t from-navy/60 via-transparent to-transparent" />
-
-              <!-- Overlay card: bottom-left floating label -->
-              <div class="hero-overlay-card absolute bottom-6 left-6 right-6 bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-5">
-                <p class="text-white/50 text-xs font-medium tracking-wider uppercase mb-1">Proyek Aktif</p>
-                <p class="text-white font-bold font-jakarta text-lg">Konstruksi Infrastruktur</p>
-                <p class="text-white/60 text-sm mt-1">Wilayah Kabupaten Sukabumi</p>
-                <div class="flex items-center gap-2 mt-3">
-                  <span class="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
-                  <span class="text-green-300 text-xs font-semibold">Sedang Berjalan</span>
-                </div>
-              </div>
-            </div>
-
-            <!-- Floating badge top-right -->
-            <div class="absolute -top-5 -right-5 w-20 h-20 bg-brand-orange rounded-2xl rotate-12 flex items-center justify-center shadow-lg">
-              <div class="-rotate-12 text-center">
-                <p class="text-white font-black font-jakarta text-lg leading-none">10+</p>
-                <p class="text-white/70 text-[9px] leading-tight">Tahun<br>Kerja</p>
-              </div>
-            </div>
-
-            <!-- Decorative corner block -->
-            <div class="absolute -bottom-4 -left-4 w-24 h-24 border-2 border-brand-orange/30 rounded-2xl" />
-          </div>
-
-        </div>
+      <!-- BG: Glow blobs -->
+      <div class="absolute inset-0 pointer-events-none">
+        <div class="hero-orb-1 absolute top-[-10%] left-1/2 -translate-x-1/2 w-[700px] h-[700px] bg-brand-orange/10 rounded-full blur-[120px]" />
+        <div class="hero-orb-2 absolute bottom-[-10%] left-[15%] w-[400px] h-[400px] bg-brand-orange/8 rounded-full blur-[100px]" />
+        <div class="hero-orb-3 absolute top-[30%] right-[5%] w-[300px] h-[300px] bg-blue-500/8 rounded-full blur-[90px]" />
       </div>
+
+      <!-- BG: Subtle grid lines -->
+      <div class="absolute inset-0 pointer-events-none"
+        style="background-image: linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px); background-size: 80px 80px;" />
+
+      <!-- BG: Rotating large orbital ring -->
+      <div class="hero-orbital absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] rounded-full border border-dashed border-white/5 pointer-events-none" />
+      <div class="hero-ring absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[550px] h-[550px] rounded-full border border-brand-orange/10 pointer-events-none" />
+
+      <!-- Main content: centered -->
+      <div class="container mx-auto px-4 md:px-8 relative z-10 pt-28 pb-12 flex flex-col items-center text-center">
+
+
+        <!-- Headline -->
+        <h1 class="hero-title font-jakarta font-black text-white leading-[1.05] mb-4 max-w-4xl" style="font-size: clamp(2.6rem, 5.5vw, 5rem);">
+          Bangun Lebih Kuat,
+          <span class="block text-white">Selesai Tepat Waktu.</span>
+          <span class="hero-cycle-word block text-gradient mt-1" style="font-size: clamp(2.2rem, 4.5vw, 4rem); min-height: 1.1em;">{{ cyclingWords[0] }}</span>
+        </h1>
+
+        <!-- Accent line -->
+        <div class="hero-line w-16 h-1 bg-brand-orange rounded-full mb-5 origin-center" />
+
+        <!-- Sub text -->
+        <p class="hero-desc text-white/50 text-base leading-relaxed max-w-lg mb-8">
+          Penyedia jasa konstruksi & infrastruktur profesional di Sukabumi —
+          irigasi, jalan, bangunan, hingga tenaga kerja terampil.
+        </p>
+
+        <!-- CTAs -->
+        <div class="hero-btns flex flex-wrap items-center justify-center gap-4 mb-12">
+          <NuxtLink to="/layanan" class="btn-primary">
+            Lihat Layanan Kami <ArrowRight class="w-5 h-5" />
+          </NuxtLink>
+          <NuxtLink to="/kontak-kami" class="btn-secondary">Konsultasi Gratis</NuxtLink>
+        </div>
+
+        <!-- Stats row -->
+        <div class="hero-image w-full max-w-3xl mx-auto grid grid-cols-3 divide-x divide-white/10 border border-white/10 rounded-3xl bg-white/3 backdrop-blur-sm overflow-hidden">
+          <div class="flex flex-col items-center py-6 px-4">
+            <p class="text-4xl font-black font-jakarta text-white leading-none"><span class="stat-num" data-target="10">0</span><span class="text-brand-orange">+</span></p>
+            <p class="text-white/40 text-xs mt-2 tracking-widest uppercase">Tahun Pengalaman</p>
+          </div>
+          <div class="flex flex-col items-center py-6 px-4">
+            <p class="text-4xl font-black font-jakarta text-white leading-none"><span class="stat-num" data-target="250">0</span><span class="text-brand-orange">+</span></p>
+            <p class="text-white/40 text-xs mt-2 tracking-widest uppercase">Proyek Selesai</p>
+          </div>
+          <div class="flex flex-col items-center py-6 px-4">
+            <p class="text-4xl font-black font-jakarta text-white leading-none"><span class="stat-num" data-target="7">0</span></p>
+            <p class="text-white/40 text-xs mt-2 tracking-widest uppercase">Jenis Layanan</p>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Animated Scroll cue -->
+      <!-- <div class="hero-scroll-cue absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3">
+        <span class="text-white/40 text-[9px] font-bold tracking-[0.25em] uppercase">Scroll</span>
+        <div class="w-5 h-8 border border-white/20 rounded-full flex justify-center pt-1.5 relative overflow-hidden">
+          <div class="scroll-wheel w-1 h-2 bg-brand-orange rounded-full" />
+        </div>
+      </div> -->
+
+    </section>
 
       <!-- ─ Ticker marquee ──────────────────────────────────────────── -->
       <!-- <div class="relative z-10 overflow-hidden border-t border-white/8 py-4 mt-4">
@@ -281,8 +320,6 @@ onUnmounted(() => {
           </span>
         </div>
       </div> -->
-
-    </section>
 
 
 
@@ -308,10 +345,10 @@ onUnmounted(() => {
             v-for="svc in services"
             :key="svc.id"
             :to="svc.href"
-            class="svc-bento group relative overflow-hidden rounded-2xl p-7 min-h-[210px] flex flex-col justify-between transition-all duration-300 cursor-pointer"
+            class="svc-bento group relative overflow-hidden rounded-2xl p-7 min-h-[210px] flex flex-col justify-between transition-all duration-300 cursor-pointer hover:-translate-y-1.5"
             :class="svc.dark
-              ? 'bg-navy hover:bg-[#162d4a]'
-              : 'bg-white border border-gray-100 hover:border-brand-orange/30 hover:shadow-lg'"
+              ? 'bg-navy border border-white/5 hover:border-brand-orange/30 hover:shadow-[0_8px_30px_rgba(249,115,22,0.15)]'
+              : 'bg-white border border-gray-100 hover:border-brand-orange/30 hover:shadow-xl'"
           >
             <!-- Subtle number watermark -->
             <div
@@ -324,10 +361,10 @@ onUnmounted(() => {
             <div class="relative z-10 flex flex-col h-full">
               <!-- Icon -->
               <div
-                class="w-12 h-12 rounded-xl flex items-center justify-center mb-6 transition-colors duration-300"
+                class="w-12 h-12 rounded-xl flex items-center justify-center mb-6 transition-transform duration-300 group-hover:scale-110"
                 :class="svc.dark
-                  ? 'bg-brand-orange/20 text-brand-orange group-hover:bg-brand-orange group-hover:text-white'
-                  : 'bg-brand-orange/10 text-brand-orange group-hover:bg-brand-orange group-hover:text-white'"
+                  ? 'bg-brand-orange/20 text-brand-orange'
+                  : 'bg-brand-orange/10 text-brand-orange'"
               >
                 <component :is="svc.icon" class="w-6 h-6" />
               </div>
