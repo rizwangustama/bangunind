@@ -166,6 +166,7 @@ onUnmounted(() => ctx?.revert())
       <section
         v-for="(service, index) in services"
         :key="service.id"
+        :id="service.id"
         class="service-section relative overflow-hidden"
         :data-even="index % 2 === 1"
         :class="index % 2 === 0 ? 'bg-white' : 'bg-surface-light'"

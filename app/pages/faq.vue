@@ -56,7 +56,7 @@ onUnmounted(() => ctx?.revert())
 </script>
 
 <template>
-  <div class="pt-24 min-h-screen bg-surface-light">
+  <div class="pt-[72px] min-h-screen bg-surface-light">
     <!-- Hero -->
     <section class="bg-navy py-20 relative overflow-hidden">
       <div class="absolute inset-0 dot-pattern opacity-10" />

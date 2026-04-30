@@ -125,7 +125,7 @@ const closeMenu = () => {
                   <li v-for="sub in subMenus" :key="sub.name" class="dropdown-item">
                     <NuxtLink
                       :to="sub.href"
-                      class="flex items-center gap-3 px-4 py-3 hover:bg-surface-light transition-colors duration-200 group/item"
+                      class="flex items-center gap-3 px-4 py-3 hover:rounded-xl hover:transition-all hover:bg-surface-light transition-colors duration-200 group/item"
                       @click="isDropdownOpen = false"
                     >
                       <div class="w-8 h-8 rounded-xl bg-brand-orange/10 flex items-center justify-center text-brand-orange shrink-0 group-hover/item:bg-brand-orange group-hover/item:text-white transition-all duration-200">
